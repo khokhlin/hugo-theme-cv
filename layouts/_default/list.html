@@ -1,0 +1,33 @@
+{{ define "main" }}
+
+<section id="list">
+
+    {{ $baseurl := .Site.BaseURL }}
+
+    {{ if eq .Data.Singular "tag" }}
+        <h4>#{{ .Title | lower }}</h4>
+    {{ else }}
+        <h4>{{ .Title }}</h4>
+    {{ end }}
+
+    {{ .Content }}
+
+    {{ range (.Paginate (.Data.Pages.GroupByDate "2018")).PageGroups  }}
+
+    <h5>{{ .Key }}</h5>
+    <ul>
+        {{ range .Pages }}
+        <li>
+            <a href="{{ .Permalink }}">{{ if .Draft }}DRAFT: {{end}}{{ .Title | markdownify }}</a>
+            <time class="date-meta">{{ .Date.Format "Jan 2" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+    
+    {{ end }}
+
+</section>
+
+{{ template "_internal/pagination.html" . }}
+
+{{ end }}
